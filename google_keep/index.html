@@ -1,9 +1,17 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans:400,500&display=swap"></link>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="./style.css">
     </head>
     <body>
+        <div class="modal">
+            <div class="modal-content">
+               <input class="modal-title" placeholder="Title" type="text">   
+               <input class="modal-text" placeholder="Take a note..." type="text">   
+               <span class="modal-close-button">Close</span>
+             </div>    
+         </div> 
         <main>
             <header>
                 <img src="https://www.gstatic.com/images/branding/product/1x/keep_48dp.png" alt="google keep logo" class="header-logo">
@@ -16,7 +24,7 @@
                 <input type="text" id="note-text" placeholder="Take a note...">
                 <div id="form-buttons">
                     <button type="submit" id="submit-button">Submint</button>
-                    <button type="button" id="form-close-button"">Close</button>
+                    <button type="button" id="form-close-button">Close</button>
                 </div>
             </form>
         </div>
