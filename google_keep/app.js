@@ -19,12 +19,14 @@ class App {
     this.$colorTooltip = document.querySelector('#color-tooltip');
 
     this.addEventListeners();
+    this.loadNotes();
   }
 
   addEventListeners() {
     document.body.addEventListener("click", event => {
       this.handleFormClick(event);
       this.selectNote(event);
+      this.deleteNote(event);
       this.openModal(event);
     });
     
@@ -103,6 +105,8 @@ class App {
   }
 
   openModal(event) {
+    if (!event.target.matches(".note")) return;
+
     if (event.target.closest(".note")) {
       this.$modal.classList.toggle("open-modal");
       this.$modalTitle.value = this.title;
@@ -138,9 +142,24 @@ class App {
       id: this.notes.length > 0 ? this.notes[this.notes.length - 1].id + 1 : 1
     };
     this.notes = [...this.notes, newNote];
+
+    this.saveNotes();
     this.displayNotes();
     this.closeForm();
   }
+
+  saveNotes() {
+    localStorage.setItem("notes", JSON.stringify(this.notes));
+  }
+
+  loadNotes() {
+    const notes = localStorage.getItem("notes");
+    if (notes) {
+      this.notes = JSON.parse(notes);
+      this.displayNotes();
+    }
+  }
+
 
   editNote() {
     const title = this.$modalTitle.value;
@@ -148,6 +167,7 @@ class App {
     this.notes = this.notes.map(note =>
       note.id === Number(this.id) ? { ...note, title, text } : note
     );
+    this.saveNotes();   
     this.displayNotes();
   }
   
@@ -155,6 +175,7 @@ class App {
     this.notes = this.notes.map(note =>
       note.id === Number(this.id) ? { ...note, color } : note
     );
+    this.saveNotes();
     this.displayNotes();
   }
 
@@ -165,6 +186,13 @@ class App {
     this.title = $noteTitle.innerText;
     this.text = $noteText.innerText;
     this.id = $selectedNote.dataset.id;
+  }
+
+  deleteNote(event) {
+    if (!event.target.matches(".toolbar-delete")) return;
+    this.notes = this.notes.filter(note => note.id !== Number(this.id));
+    this.saveNotes();
+    this.displayNotes();
   }
 
   displayNotes() {
